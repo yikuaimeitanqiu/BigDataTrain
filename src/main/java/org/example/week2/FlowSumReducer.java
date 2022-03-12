@@ -1,4 +1,4 @@
-package org.example;
+package org.example.week2;
 
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;

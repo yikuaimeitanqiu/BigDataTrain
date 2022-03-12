@@ -6,10 +6,13 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.example.week2.FlowBean;
+import org.example.week2.FlowSumMapper;
+import org.example.week2.FlowSumReducer;
 
 /**
  * description： <br>
- *
+ * 第二周作业
  * @author GuWeiSheng
  * @Date 2022/3/10 20:42
  * @history <br>
@@ -22,7 +25,6 @@ public class FlowSumDriver
     {
         //通过Job来封装本次mr的相关信息
         Configuration conf = new Configuration();
-        // conf.set("mapreduce.framework.name","local");
         Job job = Job.getInstance(conf);
 
         //指定本次mr job jar包运行主类
@@ -46,7 +48,6 @@ public class FlowSumDriver
         FileInputFormat.setInputPaths(job,"/user/student3/guweisheng/mapreduce/intput/");
         FileOutputFormat.setOutputPath(job,new Path("/user/student3/guweisheng/mapreduce/output"));
 
-        // job.submit(); //一般不要这个.
         //提交程序  并且监控打印程序执行情况
         boolean b = job.waitForCompletion(true);
         System.exit(b ? 0 : 1);
