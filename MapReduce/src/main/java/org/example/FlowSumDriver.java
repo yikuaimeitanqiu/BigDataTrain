@@ -6,9 +6,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-import org.example.week2.FlowBean;
-import org.example.week2.FlowSumMapper;
-import org.example.week2.FlowSumReducer;
+
 
 /**
  * description： <br>
