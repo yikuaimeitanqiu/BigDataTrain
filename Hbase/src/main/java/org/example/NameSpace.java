@@ -16,16 +16,7 @@ import java.io.IOException;
  */
 public class NameSpace
 {
-    /**
-     * description:
-     * hbase shell 里的 create_namespace ""
-     * 新建命名空间
-     *
-     * @param admin
-     * @param name
-     * @author GuWeiSheng
-     * @date 2022/3/18 23:47
-     */
+
     public static void createNameSpace(HBaseAdmin admin, String name) throws IOException
     {
 
