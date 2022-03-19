@@ -27,7 +27,7 @@ public class Data
     {
         //设置hbase模块
         Configuration configuration = HBaseConfiguration.create();
-        configuration.set("hbase.zookeeper.quorum", "127.0.0.1");
+        configuration.set("hbase.zookeeper.quorum", "emr-worker-2,emr-worker-1,emr-header-1");
         configuration.set("hbase.zookeeper.property.clientPort", "2181");
         configuration.set("hbase.master", "127.0.0.1:16000");
 
