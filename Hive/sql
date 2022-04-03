@@ -1,0 +1,73 @@
+# 复制数据
+cp -rf /data/hive /home/student3/guweisheng
+# 修改字段分隔符
+sed -i "s/::/,/g" users.dat
+sed -i "s/::/,/g" movies.dat
+sed -i "s/::/,/g" ratings.dat
+
+# 上传文件至HDFS中
+hdfs dfs -mkdir -p /user/student3/guweisheng/hive/user
+hdfs dfs -put /home/student3/guweisheng/hive/users.dat /user/student3/guweisheng/hive/user/users
+
+hdfs dfs -mkdir -p /user/student3/guweisheng/hive/movie
+hdfs dfs -put /home/student3/guweisheng/hive/movies.dat /user/student3/guweisheng/hive/movie/movies
+
+hdfs dfs -mkdir -p /user/student3/guweisheng/hive/rating
+hdfs dfs -put /home/student3/guweisheng/hive/ratings.dat /user/student3/guweisheng/hive/rating/ratings
+
+
+# 创建数据库
+create database if not exists guweisheng;
+use guweisheng;
+
+# 创建Hive表
+create external table if not exists guweisheng.`ods_users` (
+`userid` bigint comment 'userid',
+`sex` string comment 'sex',
+`age` int comment 'age',
+`occupation` string comment 'occupation',
+`zipcode` string comment 'zipcode')
+comment 'users'
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+stored as textfile
+location '/user/student3/guweisheng/hive/user';
+
+create external table if not exists guweisheng.`ods_movies` (
+`movieid` bigint comment 'movieid',
+`moviename` string comment 'moviename',
+`movietype` string comment 'movietype')
+comment 'movie'
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+stored as textfile
+location '/user/student3/guweisheng/hive/movie';
+
+create external table if not exists guweisheng.`ods_ratings` (
+`userid` bigint comment 'userid',
+`movieid` bigint comment 'movieid',
+`rate` bigint comment 'rate',
+`times` bigint comment 'time')
+comment 'rating'
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+stored as textfile
+location '/user/student3/guweisheng/hive/rating';
+
+
+问题1:展示电影 ID 为 2116 这部电影各年龄段的平均影评分。
+select
+t1.age as age, avg(t2.rate) as avgrate
+from
+guweisheng.`ods_users` t1 join guweisheng.`ods_ratings` t2 on t1.userid=t2.userid
+where t2.movieid=2116
+group by t1.age;
+
+问题2:找出男性评分最高且评分次数超过 50 次的 10 部电影，展示电影名，平均影评分和评分次数。
+select
+t3.sex sex, t1.moviename name, avg(t2.rate) avgrate, count(t2.userid) total
+from
+guweisheng.ods_movies t1
+left join guweisheng.ods_ratings t2 on t1.movieid = t2.movieid
+left join guweisheng.ods_users t3 on t2.userid = t3.userid
+where t3.sex = 'M'
+group by t3.sex,t1.moviename
+having total > 50
+order by avgrate desc limit 10;
